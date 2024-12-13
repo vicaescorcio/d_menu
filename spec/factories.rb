@@ -1,4 +1,8 @@
 FactoryBot.define do
+  factory :ingredient do
+    name { Faker::Food.ingredient }
+  end
+
   factory(:recipe) do
     title { Faker::Food.dish }
     instructions { Faker::Lorem.paragraph }
