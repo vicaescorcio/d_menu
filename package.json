@@ -28,6 +28,7 @@
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react_ujs": "^3.2.1",
     "shakapacker": "8.0.0",
     "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.10",
