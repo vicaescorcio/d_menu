@@ -1,12 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
-
-const HelloWorld = (props) => {
-  return <React.Fragment>Greetings: {props.greeting}</React.Fragment>;
-};
-
-HelloWorld.propTypes = {
-  greeting: PropTypes.string,
+const HelloWorld: any = (props: { greetings: string }) => {
+  return <React.Fragment>Greetindssgs: {props.greetings}</React.Fragment>;
 };
 
 export default HelloWorld;
