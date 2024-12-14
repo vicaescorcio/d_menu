@@ -6,6 +6,5 @@ class Recipe < ApplicationRecord
   validates :cook_time_seconds, numericality: { only_integer: true }
   validates :prep_time_seconds, numericality: { only_integer: true }
 
-  has_many :preparations, dependent: :destroy
-  has_many :ingredients, through: :preparations
+  has_many :ingredients
 end
