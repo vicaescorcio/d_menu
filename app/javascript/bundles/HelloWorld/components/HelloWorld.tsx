@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import * as style from "./HelloWorld.module.css";
+import style from "./HelloWorld.module.css";
 import Test from "./Test";
 
 const HelloWorld = (props) => {
