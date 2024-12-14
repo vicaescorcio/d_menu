@@ -1,4 +1,5 @@
 DOWNLOADED_FILE_PATH = 'downloaded_recipes.json.gz'
+DOWNNLOAD_URL = 'https://pennylane-interviewing-assets-20220328.s3.eu-west-1.amazonaws.com/recipes-en.json.gz'
 
 namespace :db do
   namespace :seed do
@@ -8,10 +9,8 @@ namespace :db do
       require 'open-uri'
       require 'json'
 
-      download_url = 'https://pennylane-interviewing-assets-20220328.s3.eu-west-1.amazonaws.com/recipes-en.json.gz'
       begin
-        # wget https://pennylane-interviewing-assets-20220328.s3.eu-west-1.amazonaws.com/recipes-en.json.gz && gzip -dc recipes-en.json.gz > recipes-en.json
-        URI.open(download_url) do |remote_file|
+        URI.open(DOWNNLOAD_URL) do |remote_file|
           File.open(DOWNLOADED_FILE_PATH, 'wb') do |local_file|
             local_file.write(remote_file.read)
           end
@@ -21,20 +20,43 @@ namespace :db do
       end
     end
 
-
-    task :recipes => :download_recipes do
+    task recipes: [:download_recipes, :environment] do
       decompressed_data = Zlib::GzipReader.open(DOWNLOADED_FILE_PATH) do |gz|
         gz.read
       end
 
       json_data = JSON.parse(decompressed_data)
 
-      json_data.for_each do |recipe_data|
-        recipe_data['ingredients'].each do |ingredient_data|
-          ingredient = Ingredient.find_or_create_by(name: ingredient_data['name'])
+      puts "Seeding database with #{json_data.count} recipes"
 
+      ActiveRecord::Base.transaction do
+        json_data.each_with_index do |recipe_data, index|
+          puts "Seeding recipe (#{index+1}/#{json_data.count}): #{recipe_data['title']}..."
+          recipe = Recipe.find_or_create_by(title: recipe_data['title']) do |r|
+            r.cook_time_seconds = (recipe_data['cook_time']|| 1)  * 60
+            r.prep_time_seconds = (recipe_data['prep_time'] || 1) * 60
+            r.instructions = "No instructions provided"
+            r.servings = 1
+            r.ratings ||= recipe_data['ratings']
+            r.category = recipe_data['category']
+            r.author = recipe_data['author']
+            r.image_url = recipe_data['image']
+          end
 
+          recipe.save!
 
+          recipe_data['ingredients'].each do |ingredient_data|
+            ingredient = Ingredient.find_or_create_by(preparation_method: ingredient_data) do |i|
+              i.name = ingredient_data
+            end
+            ingredient.recipe = recipe
+            ingredient.save!
+          end
+        end
+      end
+
+      rescue ActiveRecord::RecordInvalid => e
+        puts "Error saving recipe: #{e.message}"
       rescue Zlib::GzipFile::Error => e
         puts "Error reading gzipped file: #{e.message}"
       rescue JSON::ParserError => e
