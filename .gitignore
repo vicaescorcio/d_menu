@@ -42,3 +42,5 @@ yarn-debug.log*
 .yarn-integrity
 
 .vscode/*
+
+downloaded_recipes.json.gz
