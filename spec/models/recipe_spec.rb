@@ -42,4 +42,75 @@ RSpec.describe Recipe, type: :model do
       end
     end
   end
+
+  describe 'self#recommendations_with_any_ingredients' do
+    subject(:recommendations) { described_class.recommendations_with_any_ingredients(*ingredients) }
+
+    let(:recipes_data) do
+      {
+        'recipe1': %w[parmeggiano\ cheese tomato garlic],
+        'recipe2': %w[white\ sauce provolone\ cheese]
+      }
+    end
+    let!(:recipes) do
+      recipes_data.each do |title, ingredients|
+        recipe = FactoryBot.create(:recipe, title: title, ingredients_description: ingredients.join('\n'))
+        ingredients.each do |description|
+          FactoryBot.create(:ingredient, preparation_method: description, name: description, recipe: recipe)
+        end
+      end
+    end
+
+    context 'when ingredients are simple term in more than one recipes' do
+      let(:ingredients) { ['cheese'] }
+
+      it do
+        expect(recommendations.count).to eq(2)
+      end
+    end
+
+    context 'when ingredients are more than one and present in one or another recipes' do
+      let(:ingredients) { ['provolone cheese', 'tomato'] }
+
+      it do
+        expect(recommendations.count).to eq(2)
+      end
+    end
+  end
+
+  describe 'self#recommendations_with_all_ingredients' do
+    subject(:recommendations) { described_class.recommendations_with_all_ingredients(*ingredients) }
+
+    let(:recipes_data) do
+      {
+        'recipe1': %w[parmeggiano\ cheese tomato garlic],
+        'recipe2': %w[white\ sauce provolone\ cheese]
+      }
+    end
+
+    let!(:recipes) do
+      recipes_data.each do |title, ingredients|
+        recipe = FactoryBot.create(:recipe, title: title, ingredients_description: ingredients.join('\n'))
+        ingredients.each do |description|
+          FactoryBot.create(:ingredient, preparation_method: description, name: description, recipe: recipe)
+        end
+      end
+    end
+
+    context 'when ingredients are in differentrecipes' do
+      let(:ingredients) { ['provolone cheese', 'tomato'] }
+
+      it do
+        expect(recommendations.count).to eq(0)
+      end
+    end
+
+    context 'when ingredients are just in one recipe' do
+      let(:ingredients) { ['parmeggiano cheese', 'tomato'] }
+
+      it do
+        expect(recommendations.count).to eq(1)
+      end
+    end
+  end
 end
