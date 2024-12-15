@@ -1,10 +1,11 @@
 import ReactOnRails from "react-on-rails";
 
-import HelloWorld from "../bundles/HelloWorld/components/HelloWorld";
-import Test from "../bundles/Test/Test";
+import RecommendationForm from "../bundles/RecommendationForm";
+import RecipeCard from "../bundles/RecipeCard";
+import Main from "../bundles/Main";
 
-// This is how react_on_rails can see the HelloWorld in the browser.
 ReactOnRails.register({
-  HelloWorld,
-  Test,
+  RecommendationForm,
+  RecipeCard,
+  Main,
 });
