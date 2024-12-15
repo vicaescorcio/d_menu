@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as style from "./HelloWorld.module.css";
-import Test from "./Test";
 import { Typography } from "@mui/material";
 
 import "@fontsource/roboto/300.css";
@@ -12,6 +11,17 @@ import "@fontsource/roboto/700.css";
 const HelloWorld = (props) => {
   const [name, setName] = useState(props.name);
 
+  useEffect(() => {
+    console.log("olar");
+    fetch("/test")
+      .then((x) => {
+        return x.json();
+      })
+      .then((y) => {
+        console.log(y);
+      });
+  }, []);
+
   return (
     <div>
       <Typography variant="h5" component="h2" gutterBottom>
@@ -19,7 +29,6 @@ const HelloWorld = (props) => {
       </Typography>
       <h3>Hello, {name}!</h3>
       <hr />
-      <Test />
       <form>
         <label className={style.bright} htmlFor="name">
           Say hello to:

@@ -7,4 +7,13 @@ class Recipe < ApplicationRecord
   validates :prep_time_seconds, numericality: { only_integer: true }
 
   has_many :ingredients
+
+
+  def self.any_recommendations(*ingredients)
+    includes(:ingredients).where("ingredients.preparation_method ILIKE ANY (array[?])", ingredients).references("ingredients")
+  end
+
+  def self.in_recommendations(*ingredients)
+    includes(:ingredients).where("ingredients.preparation_method ILIKE ALL (array[?])", ingredients).references("ingredients")
+  end
 end
