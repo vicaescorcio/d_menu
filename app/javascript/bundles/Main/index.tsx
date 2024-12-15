@@ -6,6 +6,7 @@ import { Recipe } from "../RecipeCard/types";
 
 const Main = () => {
   const [ingredients, setIngredients] = React.useState<string[]>([]);
+  const [rule, setRule] = React.useState<string>("any");
   const [recipes, setRecipes] = React.useState<Recipe[]>([]);
   const [disableForm, setDisableForm] = React.useState<boolean>(false);
 
@@ -14,7 +15,7 @@ const Main = () => {
     rule,
   }: {
     ingredients: string[];
-    rule: "any" | "all";
+    rule: string;
   }) => {
     setDisableForm(true);
 
@@ -32,27 +33,24 @@ const Main = () => {
       }
       const { recipes } = await response.json();
 
+      setRecipes(recipes);
       setDisableForm(false);
-
-      return recipes;
     } catch (error) {
       console.error(error);
     }
   };
 
-  const onAddIngredient = async (ingredient: string) => {
+  const onAddIngredient = async (ingredient: string, rule: string) => {
     const newIngredients = [...ingredients, ingredient];
 
     setIngredients(newIngredients);
-    const recipes = await getRecommendation({
+    await getRecommendation({
       ingredients: newIngredients,
-      rule: "any",
+      rule,
     });
-
-    setRecipes(recipes);
   };
 
-  const onDeleteIngredient = async (ingredient: string) => {
+  const onDeleteIngredient = async (ingredient: string, rule: string) => {
     const newIngredients = ingredients.filter((i) => i !== ingredient);
     setIngredients(newIngredients);
 
@@ -61,12 +59,16 @@ const Main = () => {
       return;
     }
 
-    const recipes = await getRecommendation({
+    await getRecommendation({
       ingredients: newIngredients,
-      rule: "any",
+      rule,
     });
+  };
 
-    setRecipes(recipes);
+  const onRuleChange = async (value: boolean) => {
+    const newRule = value ? "any" : "all";
+    setRule(newRule);
+    const recipes = await getRecommendation({ ingredients, rule: newRule });
   };
 
   return (
@@ -74,7 +76,9 @@ const Main = () => {
       <RecommendationForm
         onAddIngredient={onAddIngredient}
         onDeleteIngredient={onDeleteIngredient}
+        onRuleChange={onRuleChange}
         ingredients={ingredients}
+        rule={rule}
         disable={disableForm}
       />
 

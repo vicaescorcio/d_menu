@@ -7,8 +7,6 @@ class RecipesController < ApplicationController
       Recipe.in_recommendations(*params[:ingredients])
     end
 
-    puts recommended_recipes.size
-
     respond_to do |format|
       format.json do
         render json: { recipes: recommended_recipes.slice(0, 5) }
