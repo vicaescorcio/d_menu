@@ -41,6 +41,7 @@ namespace :db do
             r.category = recipe_data["category"]
             r.author = recipe_data["author"]
             r.image_url = recipe_data["image"]
+            r.ingredients_description = recipe_data["ingredients"].join("\n")
           end
 
           recipe.save!
