@@ -9,17 +9,15 @@ class Recipe < ApplicationRecord
 
   has_many :ingredients
 
-  def self.any_recommendations(*ingredients)
+  def self.recommendations_with_any_ingredients(*ingredients)
     ingredients_keywords = ingredients.map { |val| "%#{val}%" }
-    includes(:ingredients).
-      where("ingredients.preparation_method ILIKE ANY (array[?])", ingredients_keywords).
-        references("ingredients")
+
+    where("ingredients_description ILIKE ANY (ARRAY[?])", ingredients_keywords)
   end
 
-  def self.in_recommendations(*ingredients)
+  def self.recommendations_with_all_ingredients(*ingredients)
     ingredients_keywords = ingredients.map { |val| "%#{val}%" }
-    includes(:ingredients).
-      where("ingredients.preparation_method ILIKE ALL (array[?])", ingredients_keywords).
-        references("ingredients")
+
+    where("ingredients_description ILIKE ALL (ARRAY[?])", ingredients_keywords)
   end
 end

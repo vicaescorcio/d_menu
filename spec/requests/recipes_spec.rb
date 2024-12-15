@@ -11,7 +11,7 @@ RSpec.describe "Recipes", type: :request do
     end
     let!(:recipes) do
       recipes_data.each do |title, ingredients|
-        recipe = FactoryBot.create(:recipe, title: title)
+        recipe = FactoryBot.create(:recipe, title: title, ingredients_description: ingredients.join('\n'))
         ingredients.each do |description|
           FactoryBot.create(:ingredient, preparation_method: description, name: description, recipe: recipe)
         end
