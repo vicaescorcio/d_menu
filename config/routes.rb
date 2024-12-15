@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-  get 'hello_world', to: 'hello_world#index'
-  get 'home/index'
+  get "hello_world", to: "hello_world#index"
+  get "test", to: "hello_world#test"
+  get "home/index"
+
+  get "recommendations", to: "recipes#recommendations"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -13,5 +16,5 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   # Defines the root path route ("/")
-  root "home#index"
+  root "recipes#index"
 end

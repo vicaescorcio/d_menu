@@ -7,4 +7,26 @@ class Recipe < ApplicationRecord
   validates :prep_time_seconds, numericality: { only_integer: true }
 
   has_many :ingredients
+
+  def self.any_recommendations(*ingredients)
+    ingredients_keywords = ingredients.map { |val| "%#{val}%" }
+    includes(:ingredients).
+      where("ingredients.preparation_method ILIKE ANY (array[?])", ingredients_keywords).
+        references("ingredients")
+  end
+
+  def self.in_recommendations(*ingredients)
+    ingredients_keywords = ingredients.map { |val| "%#{val}%" }
+    includes(:ingredients).
+      where("ingredients.preparation_method ILIKE ALL (array[?])", ingredients_keywords).
+        references("ingredients")
+  end
+
+  def ingredients_description
+    ingredients.map(&:preparation_method).join("\n")
+  end
+
+  def as_json(options = {})
+    super(options.merge(methods: :ingredients_description))
+  end
 end

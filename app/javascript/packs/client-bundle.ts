@@ -1,8 +1,11 @@
 import ReactOnRails from "react-on-rails";
 
 import RecommendationForm from "../bundles/RecommendationForm";
+import RecipeCard from "../bundles/RecipeCard";
+import Main from "../bundles/Main";
 
-// This is how react_on_rails can see the HelloWorld in the browser.
 ReactOnRails.register({
   RecommendationForm,
+  RecipeCard,
+  Main,
 });
