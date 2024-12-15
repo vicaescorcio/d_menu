@@ -1,10 +1,12 @@
 class RecipesController < ApplicationController
   def recommendations
+    ingredients = params[:ingredients].split(",")
+
     recommended_recipes = case params[:rule]
     when "any"
-      Recipe.recommendations_with_any_ingredients(*params[:ingredients])
+      Recipe.recommendations_with_any_ingredients(*ingredients)
     when "all"
-      Recipe.recommendations_with_all_ingredients(*params[:ingredients])
+      Recipe.recommendations_with_all_ingredients(*ingredients)
     end
 
     respond_to do |format|

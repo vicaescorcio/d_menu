@@ -25,7 +25,7 @@ RSpec.describe "Recipes", type: :request do
     end
 
     context 'when rule is set to any' do
-      let(:query) { { ingredients: ['cheese'], rule: 'any' } }
+      let(:query) { { ingredients: 'cheese', rule: 'any' } }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -37,7 +37,7 @@ RSpec.describe "Recipes", type: :request do
     end
 
     context 'when rule is set to all' do
-      let(:query) { { ingredients: ['provolone cheese'], rule: 'all' } }
+      let(:query) { { ingredients: 'provolone cheese', rule: 'all' } }
 
       it do
         expect(response).to have_http_status(:ok)
