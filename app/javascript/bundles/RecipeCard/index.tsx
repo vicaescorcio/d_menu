@@ -7,14 +7,20 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from "react";
-import { RecipeCardProps } from "./types";
+import { RecipeCardProps } from "../shared/types";
+
+const getImageUrl = (imageUrl: string) => {
+  const urlParams = new URLSearchParams(new URL(imageUrl).search);
+
+  return decodeURIComponent(urlParams.get("url"));
+};
 
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         sx={{ height: 140 }}
-        image={recipe.image_url}
+        image={getImageUrl(recipe.image_url)}
         title="green iguana"
       />
       <CardContent>

@@ -20,3 +20,7 @@ export type Ingredient = {
   quantity_ml: number;
   preparation_method: string;
 };
+
+export type RecipesGridProps = {
+  recipes: Recipe[];
+};

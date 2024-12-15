@@ -1,8 +1,9 @@
-import { Container } from "@mui/material";
+import { Container, LinearProgress } from "@mui/material";
 import React from "react";
 import RecommendationForm from "../RecommendationForm";
 import RecipeCard from "../RecipeCard";
-import { Recipe } from "../RecipeCard/types";
+import { Recipe } from "../shared/types";
+import RecipesGrid from "../RecipesGrid";
 
 const Main = () => {
   const [ingredients, setIngredients] = React.useState<string[]>([]);
@@ -72,7 +73,7 @@ const Main = () => {
   };
 
   return (
-    <Container>
+    <Container sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       <RecommendationForm
         onAddIngredient={onAddIngredient}
         onDeleteIngredient={onDeleteIngredient}
@@ -82,10 +83,7 @@ const Main = () => {
         disable={disableForm}
       />
 
-      {recipes?.length > 0 &&
-        recipes.map((recipe) => (
-          <RecipeCard key={recipe.title} recipe={recipe} />
-        ))}
+      {disableForm ? <LinearProgress /> : <RecipesGrid recipes={recipes} />}
     </Container>
   );
 };
