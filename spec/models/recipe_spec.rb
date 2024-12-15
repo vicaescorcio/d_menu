@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Recipe, type: :model do
-  subject(:recipe) { FactoryBot.build :recipe}
+  subject(:recipe) { FactoryBot.build :recipe }
 
   describe '#valid' do
     it "has title nil" do
@@ -19,7 +19,6 @@ RSpec.describe Recipe, type: :model do
         subject.servings = 10000.445
         is_expected.not_to be_valid
       end
-
     end
 
     context "when ratings precision is greater than 4" do
@@ -32,6 +31,13 @@ RSpec.describe Recipe, type: :model do
     context "when instructions has more than 1500 characters" do
       it do
         subject.instructions = Faker::Lorem.characters(number: 1501)
+        is_expected.not_to be_valid
+      end
+    end
+
+    context "when ingredients_description has more than 2000 characters" do
+      it do
+        subject.ingredients_description = Faker::Lorem.characters(number: 2001)
         is_expected.not_to be_valid
       end
     end

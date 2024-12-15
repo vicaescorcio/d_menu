@@ -17,5 +17,6 @@ FactoryBot.define do
     cook_time_seconds { Faker::Number.number(digits: 4) }
     category { Faker::Food.ingredient }
     image_url { Faker::Internet.url }
+    ingredients_description { Faker::Lorem.paragraph }
   end
 end
