@@ -21,4 +21,12 @@ class Recipe < ApplicationRecord
       where("ingredients.preparation_method ILIKE ALL (array[?])", ingredients_keywords).
         references("ingredients")
   end
+
+  def ingredients_description
+    ingredients.map(&:preparation_method).join("\n")
+  end
+
+  def as_json(options = {})
+    super(options.merge(methods: :ingredients_description))
+  end
 end

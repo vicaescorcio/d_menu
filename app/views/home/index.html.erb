@@ -1,3 +1,2 @@
-<h1>Home#index</h1>
-<%= react_component("HelloWorld", { greeting: "Hello moda from react-rails." }) %>
-<p>Find me in app/views/home/index.html.erb</p>
+<%= react_component("RecommendationForm", props: {}, prerender: false)%>
+<%= react_component("RecipeCard", props: {recipe: Recipe.third.as_json}, prerender: false)%>
