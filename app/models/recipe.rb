@@ -9,15 +9,19 @@ class Recipe < ApplicationRecord
 
   has_many :ingredients
 
+  def self.order_by_rating
+    order(ratings: :desc)
+  end
+
   def self.recommendations_with_any_ingredients(*ingredients)
     ingredients_keywords = ingredients.map { |val| "%#{val}%" }
 
-    where("ingredients_description ILIKE ANY (ARRAY[?])", ingredients_keywords)
+    where("ingredients_description ILIKE ANY (ARRAY[?])", ingredients_keywords).order_by_rating
   end
 
   def self.recommendations_with_all_ingredients(*ingredients)
     ingredients_keywords = ingredients.map { |val| "%#{val}%" }
 
-    where("ingredients_description ILIKE ALL (ARRAY[?])", ingredients_keywords)
+    where("ingredients_description ILIKE ALL (ARRAY[?])", ingredients_keywords).order_by_rating
   end
 end
