@@ -36,12 +36,29 @@ const RecommendationForm = ({
   };
 
   return (
-    <Box>
-      <Typography variant="h5" component="h2">
-        Recommendation Form
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        padding: "1rem",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{
+          color: "#3f51b5",
+          fontWeight: "bold",
+          textAlign: "center",
+        }}
+      >
+        What do you want to cook with?
       </Typography>
 
       <TextField
+        fullWidth
         id="ingredients"
         label="Ingredients"
         onKeyDown={handleKeyDown}
@@ -49,16 +66,16 @@ const RecommendationForm = ({
       />
 
       <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-        <Tooltip title="Select OR to recommend recipes that contain at least one of the ingredients">
+        <Tooltip title="Toogle to filter recipes that should contain ALL or ANY of the ingredients">
           <Info fontSize="small" />
         </Tooltip>
-        <Typography>OR</Typography>
+        <Typography>ALL</Typography>
         <Switch
           onChange={handleRuleChange}
           defaultChecked
           inputProps={{ "aria-label": "rule" }}
         />
-        <Typography>AND</Typography>
+        <Typography>ANY</Typography>
       </Stack>
       <Stack direction="row" spacing={1}>
         {ingredients.map((ingredient, index) => (

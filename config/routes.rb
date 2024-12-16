@@ -1,10 +1,4 @@
 Rails.application.routes.draw do
-  get "hello_world", to: "hello_world#index"
-  get "test", to: "hello_world#test"
-  get "home/index"
-
-  get "recommendations", to: "recipes#recommendations"
-
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -17,4 +11,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "recipes#index"
+
+  get "recommendations", to: "recipes#recommendations"
 end
