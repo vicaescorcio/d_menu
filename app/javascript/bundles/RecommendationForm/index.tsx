@@ -10,6 +10,7 @@ import {
 import React from "react";
 import { RecommendationFormProps } from "./types";
 import { Info } from "@mui/icons-material";
+import "@fontsource/poppins/500.css";
 
 const RecommendationForm = ({
   onAddIngredient,
@@ -44,17 +45,20 @@ const RecommendationForm = ({
         padding: "1rem",
         border: "1px solid #ccc",
         borderRadius: "5px",
+        backgroundColor: "#f5f5f5",
       }}
     >
       <Typography
         variant="h4"
         sx={{
-          color: "#3f51b5",
-          fontWeight: "bold",
+          color: "#d2773c",
+          fontWeight: "500",
           textAlign: "center",
+          margin: "15px",
+          fontFamily: "Poppins",
         }}
       >
-        What do you want to cook with?
+        WHAT DO YOU WANT TO COOK WITH?
       </Typography>
 
       <TextField
@@ -63,6 +67,16 @@ const RecommendationForm = ({
         label="Ingredients"
         onKeyDown={handleKeyDown}
         disabled={disable}
+        sx={{
+          "& label.Mui-focused": {
+            color: "#d2773c",
+          },
+          "& .MuiOutlinedInput-root": {
+            "&.Mui-focused fieldset": {
+              borderColor: "#d2773c",
+            },
+          },
+        }}
       />
 
       <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
@@ -71,6 +85,19 @@ const RecommendationForm = ({
         </Tooltip>
         <Typography>ALL</Typography>
         <Switch
+          sx={{
+            "&.MuiSwitch-root .MuiSwitch-switchBase": {
+              color: "#d2773c",
+            },
+
+            "&.MuiSwitch-root .Mui-checked": {
+              color: "#d2773c",
+            },
+
+            "&.MuiSwitch-root .MuiSwitch-track": {
+              backgroundColor: "gray !important",
+            },
+          }}
           onChange={handleRuleChange}
           defaultChecked
           inputProps={{ "aria-label": "rule" }}
