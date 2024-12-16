@@ -5,9 +5,14 @@ namespace :db do
   namespace :seed do
     desc "Seed the database with recipes"
 
-    task :download_recipes do
+    task download_recipes: :environment do
       require "open-uri"
       require "json"
+
+      if Recipe.count > 10_000
+        puts "Database already seeded with #{Recipe.count} recipes"
+        exit
+      end
 
       begin
         URI.open(DOWNNLOAD_URL) do |remote_file|
@@ -55,6 +60,8 @@ namespace :db do
           end
         end
       end
+
+      File.delete(DOWNLOADED_FILE_PATH)
 
       rescue ActiveRecord::RecordInvalid => e
         puts "Error saving recipe: #{e.message}"
