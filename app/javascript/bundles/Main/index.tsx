@@ -1,11 +1,10 @@
-import { Container, LinearProgress } from "@mui/material";
+import { Container, LinearProgress, Snackbar } from "@mui/material";
 import React from "react";
 import RecommendationForm from "../RecommendationForm";
-import RecipeCard from "../RecipeCard";
-import { Recipe } from "../shared/types";
+import { MainProps, Recipe } from "../shared/types";
 import RecipesGrid from "../RecipesGrid";
 
-const Main = () => {
+const Main = ({ defaultRecipesPerPage }: MainProps) => {
   const [ingredients, setIngredients] = React.useState<string[]>([]);
   const [rule, setRule] = React.useState<string>("any");
   const [recipes, setRecipes] = React.useState<Recipe[]>([]);
@@ -14,17 +13,23 @@ const Main = () => {
   const getRecommendation = async ({
     ingredients,
     rule,
+    offset = 0,
   }: {
     ingredients: string[];
     rule: string;
+    offset?: number;
   }) => {
     setDisableForm(true);
-
+    if (!ingredients || ingredients.length === 0) {
+      return;
+    }
     try {
       const searchParams = new URLSearchParams({
         ingredients: ingredients.join(","),
         rule,
+        offset: offset.toString(),
       });
+
       const response = await fetch(
         `/recommendations?${searchParams.toString()}`
       );
@@ -34,7 +39,12 @@ const Main = () => {
       }
       const { recipes } = await response.json();
 
-      setRecipes(recipes);
+      if (offset > 0) {
+        setRecipes((prevRecipes) => [...prevRecipes, ...recipes]);
+      } else {
+        setRecipes(recipes);
+      }
+
       setDisableForm(false);
     } catch (error) {
       console.error(error);
@@ -42,6 +52,7 @@ const Main = () => {
   };
 
   const onAddIngredient = async (ingredient: string, rule: string) => {
+    setRecipes([]);
     const newIngredients = [...ingredients, ingredient];
 
     setIngredients(newIngredients);
@@ -52,6 +63,7 @@ const Main = () => {
   };
 
   const onDeleteIngredient = async (ingredient: string, rule: string) => {
+    setRecipes([]);
     const newIngredients = ingredients.filter((i) => i !== ingredient);
     setIngredients(newIngredients);
 
@@ -67,9 +79,10 @@ const Main = () => {
   };
 
   const onRuleChange = async (value: boolean) => {
+    setRecipes([]);
     const newRule = value ? "any" : "all";
     setRule(newRule);
-    const recipes = await getRecommendation({ ingredients, rule: newRule });
+    await getRecommendation({ ingredients, rule: newRule });
   };
 
   return (
@@ -83,7 +96,16 @@ const Main = () => {
         disable={disableForm}
       />
 
-      {disableForm ? <LinearProgress /> : <RecipesGrid recipes={recipes} />}
+      {recipes.length > 0 && (
+        <RecipesGrid
+          recipes={recipes}
+          ingredients={ingredients}
+          rule={rule}
+          key={ingredients.join(",")}
+          defaultRecipesPerPage={defaultRecipesPerPage}
+          fetchMoreRecords={getRecommendation}
+        />
+      )}
     </Container>
   );
 };

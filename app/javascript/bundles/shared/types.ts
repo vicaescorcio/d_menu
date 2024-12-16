@@ -1,5 +1,6 @@
 export type RecipeCardProps = {
   recipe: Recipe;
+  onRecipeInfoCopy: (recipe: Recipe) => any;
 };
 
 export type Recipe = {
@@ -35,9 +36,9 @@ export type RecipesGridProps = {
   }) => any;
   ingredients: string[];
   rule: string;
+  defaultRecipesPerPage: number;
 };
 
-export type InfiniteComponentProps<T> = {
-  records: T[];
-  fetchMoreRecords: (offset: number) => T[];
+export type MainProps = {
+  defaultRecipesPerPage: number;
 };
