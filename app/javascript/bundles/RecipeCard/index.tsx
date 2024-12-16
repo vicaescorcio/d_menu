@@ -7,10 +7,9 @@ import {
   CardMedia,
   Rating,
   Typography,
-  Snackbar,
 } from "@mui/material";
 import * as React from "react";
-import { Recipe, RecipeCardProps } from "../shared/types";
+import { RecipeCardProps } from "../shared/types";
 
 const getImageUrl = (imageUrl: string) => {
   const urlParams = new URLSearchParams(new URL(imageUrl).search);
@@ -18,9 +17,17 @@ const getImageUrl = (imageUrl: string) => {
   return decodeURIComponent(urlParams.get("url"));
 };
 
-const RecipeCard = ({ recipe, onRecipeInfoCopy }: RecipeCardProps) => {
+const RecipeCard = ({
+  recipe,
+  onRecipeInfoCopy,
+  onRecipeShare,
+}: RecipeCardProps) => {
   const handleCopyInfoClick = () => {
     onRecipeInfoCopy(recipe);
+  };
+
+  const handleShareRecipeInfo = () => {
+    onRecipeShare(recipe);
   };
   return (
     <>
@@ -59,7 +66,9 @@ const RecipeCard = ({ recipe, onRecipeInfoCopy }: RecipeCardProps) => {
           </Box>
         </CardContent>
         <CardActions>
-          <Button size="small">Share</Button>
+          <Button onClick={handleShareRecipeInfo} size="small">
+            Share
+          </Button>
           <Button onClick={handleCopyInfoClick} size="small">
             Copy All Info
           </Button>

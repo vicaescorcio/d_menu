@@ -5,8 +5,8 @@ import RecipeCard from "../RecipeCard";
 import { CircularProgress, IconButton, Snackbar } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
-const copyToClipboard = (recipe: Recipe) => {
-  const text = [
+const recipeInfoText = (recipe: Recipe) => {
+  return [
     recipe.title,
     `Author: ${recipe.author}`,
     `Prep Time: ${recipe.prep_time_seconds / 60} min`,
@@ -14,8 +14,20 @@ const copyToClipboard = (recipe: Recipe) => {
     `Ingredients:\n${recipe.ingredients_description}`,
     `Instructions: ${recipe.instructions}`,
   ].join("\n");
+};
+
+const copyToClipboard = (recipe: Recipe) => {
+  const text = recipeInfoText(recipe);
 
   navigator.clipboard.writeText(text);
+};
+
+const shareOnBlueSky = (recipe: Recipe) => {
+  const text = recipeInfoText(recipe);
+
+  const blueSkyUrl = "https://bsky.app/intent/compose";
+
+  window.open(`${blueSkyUrl}?text=${encodeURIComponent(text)}`, "_blank");
 };
 
 const RecipesGrid = ({
@@ -36,6 +48,10 @@ const RecipesGrid = ({
   const onRecipeInfoCopy = (recipe: Recipe) => {
     copyToClipboard(recipe);
     setCopiedRecipeInfo(true);
+  };
+
+  const onRecipeShare = (recipe: Recipe) => {
+    shareOnBlueSky(recipe);
   };
 
   useEffect(() => {
@@ -68,7 +84,11 @@ const RecipesGrid = ({
       <Grid container rowSpacing={1.5} columnSpacing={{ xs: 1, sm: 1, md: 1 }}>
         {recipes.map((recipe, index) => (
           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={recipe.title + index}>
-            <RecipeCard recipe={recipe} onRecipeInfoCopy={onRecipeInfoCopy} />
+            <RecipeCard
+              recipe={recipe}
+              onRecipeInfoCopy={onRecipeInfoCopy}
+              onRecipeShare={onRecipeShare}
+            />
           </Grid>
         ))}
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>

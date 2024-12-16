@@ -1,6 +1,7 @@
 export type RecipeCardProps = {
   recipe: Recipe;
   onRecipeInfoCopy: (recipe: Recipe) => any;
+  onRecipeShare: (recipe: Recipe) => any;
 };
 
 export type Recipe = {
