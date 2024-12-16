@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { RecipeCardProps } from "../shared/types";
+import "@fontsource/poppins/300.css";
 
 const getImageUrl = (imageUrl: string) => {
   const urlParams = new URLSearchParams(new URL(imageUrl).search);
@@ -38,7 +39,12 @@ const RecipeCard = ({
           title="green iguana"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{ fontFamily: "Poppins", fontWeight: "300" }}
+          >
             {recipe.title}
           </Typography>
           <Typography variant="caption" color="text.secondary">
