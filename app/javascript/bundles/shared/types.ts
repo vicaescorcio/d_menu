@@ -6,6 +6,7 @@ export type Recipe = {
   title: string;
   instructions: string;
   category: string;
+  author: string;
   cook_time_seconds: number;
   prep_time_seconds: number;
   ratings: number;
@@ -23,4 +24,20 @@ export type Ingredient = {
 
 export type RecipesGridProps = {
   recipes: Recipe[];
+  fetchMoreRecords: ({
+    ingredients,
+    rule,
+    offset,
+  }: {
+    ingredients: string[];
+    rule: string;
+    offset?: number;
+  }) => any;
+  ingredients: string[];
+  rule: string;
+};
+
+export type InfiniteComponentProps<T> = {
+  records: T[];
+  fetchMoreRecords: (offset: number) => T[];
 };
