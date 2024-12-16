@@ -38,7 +38,15 @@ const RecipeCard = ({
           title="green iguana"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{
+              fontFamily: "sans-serif",
+              fontWeight: "400",
+            }}
+          >
             {recipe.title}
           </Typography>
           <Typography variant="caption" color="text.secondary">
