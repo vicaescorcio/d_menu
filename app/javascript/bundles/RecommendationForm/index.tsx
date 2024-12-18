@@ -55,7 +55,7 @@ const RecommendationForm = ({
           fontWeight: "500",
           textAlign: "center",
           margin: "15px",
-          fontFamily: "Poppins",
+          fontFamily: "sans-serif",
         }}
       >
         WHAT DO YOU WANT TO COOK WITH?
