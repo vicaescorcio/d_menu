@@ -1,4 +1,10 @@
-import { Container, LinearProgress, Snackbar } from "@mui/material";
+import {
+  CircularProgress,
+  Container,
+  LinearProgress,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import RecommendationForm from "../RecommendationForm";
 import { MainProps, Recipe } from "../shared/types";
@@ -7,7 +13,7 @@ import RecipesGrid from "../RecipesGrid";
 const Main = ({ defaultRecipesPerPage }: MainProps) => {
   const [ingredients, setIngredients] = React.useState<string[]>([]);
   const [rule, setRule] = React.useState<string>("any");
-  const [recipes, setRecipes] = React.useState<Recipe[]>([]);
+  const [recipes, setRecipes] = React.useState<Recipe[]>(null);
   const [disableForm, setDisableForm] = React.useState<boolean>(false);
 
   const getRecommendation = async ({
@@ -19,11 +25,12 @@ const Main = ({ defaultRecipesPerPage }: MainProps) => {
     rule: string;
     offset?: number;
   }) => {
-    setDisableForm(true);
-    if (!ingredients || ingredients.length === 0) {
-      return;
-    }
     try {
+      setDisableForm(true);
+      if (!ingredients || ingredients.length === 0) {
+        throw new Error("No ingredients provided");
+      }
+
       const searchParams = new URLSearchParams({
         ingredients: ingredients.join(","),
         rule,
@@ -44,10 +51,10 @@ const Main = ({ defaultRecipesPerPage }: MainProps) => {
       } else {
         setRecipes(recipes);
       }
-
-      setDisableForm(false);
     } catch (error) {
       console.error(error);
+    } finally {
+      setDisableForm(false);
     }
   };
 
@@ -95,17 +102,24 @@ const Main = ({ defaultRecipesPerPage }: MainProps) => {
         rule={rule}
         disable={disableForm}
       />
+      {disableForm && <LinearProgress />}
 
-      {recipes.length > 0 && (
-        <RecipesGrid
-          recipes={recipes}
-          ingredients={ingredients}
-          rule={rule}
-          key={ingredients.join(",")}
-          defaultRecipesPerPage={defaultRecipesPerPage}
-          fetchMoreRecords={getRecommendation}
-        />
-      )}
+      {recipes &&
+        (recipes.length > 0 ? (
+          <RecipesGrid
+            recipes={recipes}
+            ingredients={ingredients}
+            rule={rule}
+            key={ingredients.join(",")}
+            defaultRecipesPerPage={defaultRecipesPerPage}
+            fetchMoreRecords={getRecommendation}
+          />
+        ) : (
+          <Typography variant="body1">
+            {" "}
+            No recipes found with this criteria
+          </Typography>
+        ))}
     </Container>
   );
 };
