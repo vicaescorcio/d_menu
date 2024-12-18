@@ -55,29 +55,31 @@ const RecommendationForm = ({
           fontWeight: "500",
           textAlign: "center",
           margin: "15px",
-          fontFamily: "Poppins",
+          fontFamily: "sans-serif",
         }}
       >
         WHAT DO YOU WANT TO COOK WITH?
       </Typography>
 
-      <TextField
-        fullWidth
-        id="ingredients"
-        label="Ingredients"
-        onKeyDown={handleKeyDown}
-        disabled={disable}
-        sx={{
-          "& label.Mui-focused": {
-            color: "#d2773c",
-          },
-          "& .MuiOutlinedInput-root": {
-            "&.Mui-focused fieldset": {
-              borderColor: "#d2773c",
+      <Tooltip title="Type and press enter to add the ingredient">
+        <TextField
+          fullWidth
+          id="ingredients"
+          label="Ingredients"
+          onKeyDown={handleKeyDown}
+          disabled={disable}
+          sx={{
+            "& label.Mui-focused": {
+              color: "#d2773c",
             },
-          },
-        }}
-      />
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "#d2773c",
+              },
+            },
+          }}
+        />
+      </Tooltip>
 
       <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
         <Tooltip title="Toogle to filter recipes that should contain ALL or ANY of the ingredients">
